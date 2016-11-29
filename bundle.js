@@ -21520,6 +21520,7 @@
 	      allProducts: null,
 	      showProducts: null,
 	      priceFiltered: null,
+	      searchFiltered: null,
 	      sortBy: "price",
 	      priceRange: [0, 40],
 	      options: [{ value: 'price', label: 'Price' }, { value: 'name', label: 'Name' }, { value: 'date', label: 'Recently Added' }]

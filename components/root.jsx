@@ -11,6 +11,7 @@ class Root extends Component {
       allProducts: null,
       showProducts: null,
       priceFiltered: null,
+      searchFiltered: null,
       sortBy: "price",
       priceRange: [0, 40],
       options: [
