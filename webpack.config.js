@@ -1,5 +1,3 @@
-var AnyBarWebpackPlugin = require('anybar-webpack');
-
 module.exports = {
   entry: "./symphony_store.jsx",
   output: {
@@ -15,16 +13,12 @@ module.exports = {
         query: {
           presets: ['es2015', 'react']
         }
-      }
+      },
+      { test: /\.css$/, loader: "style-loader!css-loader" },
     ],
   },
   devtool: 'source-map',
   resolve: {
     extensions: ["", ".js", ".jsx" ]
   },
-  plugins: [
-    new AnyBarWebpackPlugin({
-      enableNotifications: true
-    })
-  ]
 };
