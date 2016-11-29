@@ -21605,7 +21605,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'product-index-container' },
 	        _react2.default.createElement(
 	          'ul',
 	          { className: 'product-index' },
@@ -21630,7 +21630,7 @@
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21653,29 +21653,43 @@
 	var ProductIndexItem = function (_Component) {
 	  _inherits(ProductIndexItem, _Component);
 	
-	  function ProductIndexItem() {
+	  function ProductIndexItem(props) {
 	    _classCallCheck(this, ProductIndexItem);
 	
-	    return _possibleConstructorReturn(this, (ProductIndexItem.__proto__ || Object.getPrototypeOf(ProductIndexItem)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (ProductIndexItem.__proto__ || Object.getPrototypeOf(ProductIndexItem)).call(this, props));
+	
+	    _this.state = {
+	      product: _this.props.product
+	    };
+	    _this.formatPrice = _this.formatPrice.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(ProductIndexItem, [{
-	    key: 'render',
+	    key: "formatPrice",
+	    value: function formatPrice() {
+	      return "$" + this.state.product.msrpInCents / 100;
+	    }
+	  }, {
+	    key: "render",
 	    value: function render() {
-	      var product = this.props.product;
 	      return _react2.default.createElement(
-	        'div',
-	        null,
+	        "div",
+	        { className: "product-container" },
+	        _react2.default.createElement("img", { className: "product-image", src: "http://" + this.state.product.mainImage.ref }),
 	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          product.name
-	        ),
-	        _react2.default.createElement('img', { src: 'http://' + product.mainImage.ref }),
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          product.msrpInCents
+	          "div",
+	          { className: "product-info" },
+	          _react2.default.createElement(
+	            "h1",
+	            { className: "product-name" },
+	            this.state.product.name
+	          ),
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "product-price" },
+	            this.formatPrice()
+	          )
 	        )
 	      );
 	    }

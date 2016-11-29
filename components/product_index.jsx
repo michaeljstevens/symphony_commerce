@@ -15,7 +15,7 @@ class ProductIndex extends Component {
 
   render() {
     return(
-      <div>
+      <div className="product-index-container">
         <ul className="product-index">
           {this.state.products ? this.state.products.map(product => {
               return(<li key={product.id}>

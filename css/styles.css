@@ -1,38 +1,83 @@
 html, body, header, nav, h1, a, ul, li,
- strong, main, section, img, div, h2, p,
- form, fieldset, label, input, textarea,
- button, article, footer, small {
-   margin: 0;
-   padding: 0;
-   border: 0;
-   outline: 0;
-   font: inherit;
-   box-sizing: inherit;
-   text-align: inherit;
-   text-decoration: inherit;
-   vertical-align: inherit;
-   color: inherit;
-   background: transparent;
- }
+strong, main, section, img, div, h2, p,
+form, fieldset, label, input, textarea,
+button, article, footer, small {
+ margin: 0;
+ padding: 0;
+ border: 0;
+ outline: 0;
+ font: inherit;
+ box-sizing: inherit;
+ text-align: inherit;
+ text-decoration: inherit;
+ vertical-align: inherit;
+ color: inherit;
+ background: transparent;
+}
 
- body {
-   box-sizing: content-box;
-   font-family: sans-serif;
-   font-size: 16px;
-   line-height: 1.1666666666;
-   color: #000;
- }
+body {
+ box-sizing: content-box;
+ font-family: sans-serif;
+ font-size: 16px;
+ line-height: 1.1666666666;
+ color: #000;
+}
 
- ul {
-   list-style: none;
- }
+ul {
+ list-style: none;
+}
 
- img {
-   display: block;
-   width: 100%;
-   height: auto;
- }
+img {
+ display: block;
+ width: 100%;
+ height: auto;
+}
 
- .product-index {
+.product-index-container {
+ display: flex;
+ justify-content: center;
+}
 
- }
+.product-index {
+ display: flex;
+ flex-wrap: wrap;
+ width: 80%;
+}
+
+
+.product-container {
+  max-width: 200px;
+  height: 275px;
+  margin: 30px;
+  box-shadow: 1px 1px 15px black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.product-image {
+
+}
+
+.product-info {
+  height: 70px;
+  width: 177px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.product-name {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 16px;
+}
+
+
+.product-price {
+  color: grey;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
