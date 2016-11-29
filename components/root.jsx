@@ -22,6 +22,7 @@ class Root extends Component {
     this.sortByPrice = this.sortByPrice.bind(this);
     this.sortByName = this.sortByName.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
+    this.searchFilter = this.searchFilter.bind(this);
   }
 
   componentDidMount() {
@@ -107,6 +108,26 @@ class Root extends Component {
     this.setState({sortBy: type, showProducts: sortedProducts});
   }
 
+  searchFilter(e) {
+    e.preventDefault();
+    const text = e.target.value;
+    let matchingProducts = this.state.allProducts.filter(product => {
+      return product.name.toLowerCase().includes(text);
+    });
+    let sortType = this.state.sortBy;
+    if(sortType) {
+      if(sortType === 'price') {
+        matchingProducts = this.sortByPrice(matchingProducts);
+      } else if(sortType === 'name') {
+        matchingProducts = this.sortByName(matchingProducts);
+      } else {
+        matchingProducts = this.sortByDate(matchingProducts);
+      }
+    }
+
+    this.setState({showProducts: matchingProducts});
+  }
+
   render() {
     return(
       <div className="outer-container">
@@ -124,6 +145,10 @@ class Root extends Component {
               <option value="name">Name</option>
               <option value="date">Recently Added</option>
             </select>
+          </div>
+          <div className="search-container">
+            <h1>Search</h1>
+            <input className="search-box" onChange={this.searchFilter} type="text" name="search" />
           </div>
         </div>
         <ProductIndex products={this.state.showProducts} />

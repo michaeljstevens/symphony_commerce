@@ -21527,6 +21527,7 @@
 	    _this.sortByPrice = _this.sortByPrice.bind(_this);
 	    _this.sortByName = _this.sortByName.bind(_this);
 	    _this.sortByDate = _this.sortByDate.bind(_this);
+	    _this.searchFilter = _this.searchFilter.bind(_this);
 	    return _this;
 	  }
 	
@@ -21621,6 +21622,27 @@
 	      this.setState({ sortBy: type, showProducts: sortedProducts });
 	    }
 	  }, {
+	    key: 'searchFilter',
+	    value: function searchFilter(e) {
+	      e.preventDefault();
+	      var text = e.target.value;
+	      var matchingProducts = this.state.allProducts.filter(function (product) {
+	        return product.name.toLowerCase().includes(text);
+	      });
+	      var sortType = this.state.sortBy;
+	      if (sortType) {
+	        if (sortType === 'price') {
+	          matchingProducts = this.sortByPrice(matchingProducts);
+	        } else if (sortType === 'name') {
+	          matchingProducts = this.sortByName(matchingProducts);
+	        } else {
+	          matchingProducts = this.sortByDate(matchingProducts);
+	        }
+	      }
+	
+	      this.setState({ showProducts: matchingProducts });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21668,6 +21690,16 @@
 	                'Recently Added'
 	              )
 	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'search-container' },
+	            _react2.default.createElement(
+	              'h1',
+	              null,
+	              'Search'
+	            ),
+	            _react2.default.createElement('input', { className: 'search-box', onChange: this.searchFilter, type: 'text', name: 'search' })
 	          )
 	        ),
 	        _react2.default.createElement(_product_index2.default, { products: this.state.showProducts })

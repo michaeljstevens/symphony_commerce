@@ -93,13 +93,18 @@ img {
 .filters-container {
   display: flex;
   justify-content: space-around;;
-  width: 70%;
-
+  width: 57%;
+  flex-wrap: wrap;
 }
 
 .price-slider {
   width: 200px;
+  margin-bottom: 20px;
 }
 
 .sort-options {
+}
+
+.search-box {
+  border: 1px solid black;
 }
