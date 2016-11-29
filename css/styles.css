@@ -21,6 +21,7 @@ body {
  font-size: 16px;
  line-height: 1.1666666666;
  color: #000;
+ background-image: url('http://www.underwaterworldfiji.com/wp-content/uploads/2014/12/fiji.jpg');
 }
 
 ul {
@@ -45,6 +46,8 @@ img {
  flex-wrap: wrap;
  justify-content: center;
  width: 70%;
+ background: #FFE8C0;
+ min-width: 250px;
 }
 
 
@@ -59,6 +62,7 @@ img {
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  background: white;
 }
 
 .product-container:hover {
@@ -92,9 +96,13 @@ img {
 
 .filters-container {
   display: flex;
-  justify-content: space-around;;
-  width: 57%;
+  justify-content: space-around;
+  align-items: center;
+  width: 70%;
   flex-wrap: wrap;
+  background: #FFE8C0;
+  margin-top: 25px;
+  min-width: 250px;
 }
 
 .price-slider {
@@ -107,4 +115,5 @@ img {
 
 .search-box {
   border: 1px solid black;
+  background: white;
 }

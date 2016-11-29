@@ -21519,7 +21519,8 @@
 	    _this.state = {
 	      allProducts: null,
 	      showProducts: null,
-	      sortBy: "default",
+	      sortBy: "price",
+	      priceRange: [0, 40],
 	      options: [{ value: 'price', label: 'Price' }, { value: 'name', label: 'Name' }, { value: 'date', label: 'Recently Added' }]
 	    };
 	    _this.filterPrice = _this.filterPrice.bind(_this);
@@ -21592,6 +21593,7 @@
 	  }, {
 	    key: 'filterPrice',
 	    value: function filterPrice(range) {
+	      range = range ? range : this.state.priceRange;
 	      var filteredProducts = this.state.allProducts.filter(function (product) {
 	        return product.msrpInCents / 100 >= range[0] && product.msrpInCents / 100 <= range[1];
 	      });
@@ -21639,7 +21641,6 @@
 	          matchingProducts = this.sortByDate(matchingProducts);
 	        }
 	      }
-	
 	      this.setState({ showProducts: matchingProducts });
 	    }
 	  }, {

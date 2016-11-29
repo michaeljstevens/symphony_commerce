@@ -10,7 +10,8 @@ class Root extends Component {
     this.state = {
       allProducts: null,
       showProducts: null,
-      sortBy: "default",
+      sortBy: "price",
+      priceRange: [0, 40],
       options: [
         { value: 'price', label: 'Price' },
         { value: 'name', label: 'Name' },
@@ -79,6 +80,7 @@ class Root extends Component {
   }
 
   filterPrice(range) {
+    range = range ? range : this.state.priceRange;
     let filteredProducts = this.state.allProducts.filter(product => {
       return ((product.msrpInCents / 100) >= range[0] && (product.msrpInCents / 100) <= range[1]);
     });
@@ -124,7 +126,6 @@ class Root extends Component {
         matchingProducts = this.sortByDate(matchingProducts);
       }
     }
-
     this.setState({showProducts: matchingProducts});
   }
 
