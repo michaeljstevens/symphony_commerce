@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ProductIndexItem from './product_index_item.jsx';
 
+
 class ProductIndex extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +11,9 @@ class ProductIndex extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if(newProps.products) this.setState({products: newProps.products});
+    if(newProps.products) {
+      this.setState({products: newProps.products});
+    }
   }
 
   render() {
