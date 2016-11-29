@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ProductIndex from './product_index.jsx';
 import $ from 'jquery';
 import Rcslider from 'rc-slider';
-import Select from 'react-select';
 
 class Root extends Component {
 
@@ -79,22 +78,33 @@ class Root extends Component {
   }
 
   filterPrice(range) {
-    const filteredProducts = this.state.allProducts.filter(product => {
+    let filteredProducts = this.state.allProducts.filter(product => {
       return ((product.msrpInCents / 100) >= range[0] && (product.msrpInCents / 100) <= range[1]);
     });
+    let sortType = this.state.sortBy;
+    if(sortType) {
+      if(sortType === 'price') {
+        filteredProducts = this.sortByPrice(filteredProducts);
+      } else if(sortType === 'name') {
+        filteredProducts = this.sortByName(filteredProducts);
+      } else {
+        filteredProducts = this.sortByDate(filteredProducts);
+      }
+    }
     this.setState({showProducts: filteredProducts});
   }
 
-  sortProducts(type) {
+  sortProducts(e) {
+    const type = e ? e.target.value : this.state.sortBy;
     let sortedProducts;
-    if(type.value === 'price') {
+    if(type === 'price') {
       sortedProducts = this.sortByPrice(this.state.showProducts);
-    } else if(type.value === 'name') {
+    } else if(type === 'name') {
       sortedProducts = this.sortByName(this.state.showProducts);
     } else {
       sortedProducts = this.sortByDate(this.state.showProducts);
     }
-    this.setState({showProducts: sortedProducts});
+    this.setState({sortBy: type, showProducts: sortedProducts});
   }
 
   render() {
@@ -108,10 +118,12 @@ class Root extends Component {
               marks={{0: "0", 10: "10", 20: "20", 30: "30" }}/>
           </div>
           <div className="sort-options">
-            <Select
-              options={this.state.options}
-              onChange={this.sortProducts}
-              />
+            <h1>Sort By:</h1>
+            <select onChange={this.sortProducts}>
+              <option value="price">Price</option>
+              <option value="name">Name</option>
+              <option value="date">Recently Added</option>
+            </select>
           </div>
         </div>
         <ProductIndex products={this.state.showProducts} />

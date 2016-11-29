@@ -61,6 +61,11 @@ img {
   overflow: hidden;
 }
 
+.product-container:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 25px grey;
+}
+
 .product-image {
 
 }
@@ -87,10 +92,14 @@ img {
 
 .filters-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;;
   width: 70%;
+
 }
 
 .price-slider {
   width: 200px;
+}
+
+.sort-options {
 }
