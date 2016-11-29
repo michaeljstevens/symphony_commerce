@@ -14,7 +14,7 @@ class Root extends Component {
   componentDidMount() {
     const error = message => console.log(message);
     const success = response => {
-      debugger
+      this.setState({ products: response.products });
     };
     $.ajax({
       method: 'GET',
@@ -28,7 +28,7 @@ class Root extends Component {
   render() {
     return(
       <div>
-        <ProductIndex />
+        <ProductIndex products = {this.state.products} />
       </div>
     );
   }
