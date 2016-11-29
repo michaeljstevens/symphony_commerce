@@ -21624,13 +21624,22 @@
 	        { className: 'outer-container' },
 	        _react2.default.createElement(
 	          'div',
+	          { className: 'heading' },
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'heading-text' },
+	            'Fiji Water Store'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
 	          { className: 'filters-container' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'price-slider' },
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { className: 'filter-text' },
 	              'Select Price Range'
 	            ),
 	            _react2.default.createElement(_rcSlider2.default, { range: true, max: 40, defaultValue: [0, 100],
@@ -21639,15 +21648,15 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'sort-options' },
+	            null,
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { className: 'filter-text' },
 	              'Sort By:'
 	            ),
 	            _react2.default.createElement(
 	              'select',
-	              { onChange: this.handleSort },
+	              { className: 'sort-options', onChange: this.handleSort },
 	              _react2.default.createElement(
 	                'option',
 	                { value: 'price' },
@@ -21670,7 +21679,7 @@
 	            { className: 'search-container' },
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { className: 'filter-text' },
 	              'Search'
 	            ),
 	            _react2.default.createElement('input', { className: 'search-box', onChange: this.searchFilter, type: 'text', name: 'search' })

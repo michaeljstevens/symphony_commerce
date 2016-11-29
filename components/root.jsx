@@ -106,23 +106,26 @@ class Root extends Component {
   render() {
     return(
       <div className="outer-container">
+        <div className="heading">
+          <h1 className="heading-text">Fiji Water Store</h1>
+        </div>
         <div className="filters-container">
           <div className="price-slider">
-            <h1>Select Price Range</h1>
+            <h1 className="filter-text">Select Price Range</h1>
             <Rcslider range={true} max={40} defaultValue={[0, 100]}
               pushable={3} onAfterChange={this.priceFilter}
               marks={{0: "0", 10: "10", 20: "20", 30: "30" }}/>
           </div>
-          <div className="sort-options">
-            <h1>Sort By:</h1>
-            <select onChange={this.handleSort}>
+          <div>
+            <h1 className="filter-text">Sort By:</h1>
+            <select className="sort-options" onChange={this.handleSort}>
               <option value="price">Price</option>
               <option value="name">Name</option>
               <option value="date">Recently Added</option>
             </select>
           </div>
           <div className="search-container">
-            <h1>Search</h1>
+            <h1 className="filter-text">Search</h1>
             <input className="search-box" onChange={this.searchFilter} type="text" name="search" />
           </div>
         </div>
