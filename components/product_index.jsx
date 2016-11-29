@@ -18,15 +18,13 @@ class ProductIndex extends Component {
 
   render() {
     return(
-      <div className="product-index-container">
-        <ul className="product-index">
-          {this.state.products ? this.state.products.map(product => {
-              return(<li key={product.id}>
-                <ProductIndexItem product={product} />
-              </li>);
-            }) : null}
-        </ul>
-      </div>
+      <ul className="product-index">
+        {this.state.products ? this.state.products.map(product => {
+            return(<li key={product.id}>
+              <ProductIndexItem product={product} />
+            </li>);
+          }) : null}
+      </ul>
     );
   }
 }

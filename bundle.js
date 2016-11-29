@@ -21577,8 +21577,14 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'price-slider' },
-	            _react2.default.createElement(_rcSlider2.default, { range: true, max: 50, defaultValue: [0, 100],
-	              pushable: 3, onAfterChange: this.filterPrice })
+	            _react2.default.createElement(
+	              'h1',
+	              null,
+	              'Select Price Range'
+	            ),
+	            _react2.default.createElement(_rcSlider2.default, { range: true, max: 40, defaultValue: [0, 100],
+	              pushable: 3, onAfterChange: this.filterPrice,
+	              marks: { 0: "0", 10: "10", 20: "20", 30: "30" } })
 	          )
 	        ),
 	        _react2.default.createElement(_product_index2.default, { products: this.state.showProducts })
@@ -21644,19 +21650,15 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'product-index-container' },
-	        _react2.default.createElement(
-	          'ul',
-	          { className: 'product-index' },
-	          this.state.products ? this.state.products.map(function (product) {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: product.id },
-	              _react2.default.createElement(_product_index_item2.default, { product: product })
-	            );
-	          }) : null
-	        )
+	        'ul',
+	        { className: 'product-index' },
+	        this.state.products ? this.state.products.map(function (product) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: product.id },
+	            _react2.default.createElement(_product_index_item2.default, { product: product })
+	          );
+	        }) : null
 	      );
 	    }
 	  }]);
@@ -21699,9 +21701,11 @@
 	    var _this = _possibleConstructorReturn(this, (ProductIndexItem.__proto__ || Object.getPrototypeOf(ProductIndexItem)).call(this, props));
 	
 	    _this.state = {
-	      product: _this.props.product
+	      product: _this.props.product,
+	      style: null
 	    };
 	    _this.formatPrice = _this.formatPrice.bind(_this);
+	    _this.grow = _this.grow.bind(_this);
 	    return _this;
 	  }
 	
@@ -21711,11 +21715,18 @@
 	      return "$" + this.state.product.msrpInCents / 100;
 	    }
 	  }, {
+	    key: "grow",
+	    value: function grow(e) {
+	      e.preventDefault();
+	      var newStyle = this.state.style ? null : { width: "500px", height: "500px" };
+	      this.setState({ style: newStyle });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
-	        { className: "product-container" },
+	        { className: "product-container", style: this.state.style, onClick: this.grow },
 	        _react2.default.createElement("img", { className: "product-image", src: "http://" + this.state.product.mainImage.ref }),
 	        _react2.default.createElement(
 	          "div",

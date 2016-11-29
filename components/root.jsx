@@ -54,11 +54,13 @@ class Root extends Component {
       <div className="outer-container">
         <div className="filters-container">
           <div className="price-slider">
-            <Rcslider range={true} max={50} defaultValue={[0, 100]}
-              pushable={3} onAfterChange={this.filterPrice}/>
+            <h1>Select Price Range</h1>
+            <Rcslider range={true} max={40} defaultValue={[0, 100]}
+              pushable={3} onAfterChange={this.filterPrice}
+              marks={{0: "0", 10: "10", 20: "20", 30: "30" }}/>
           </div>
         </div>
-        <ProductIndex products = {this.state.showProducts} />
+        <ProductIndex products={this.state.showProducts} />
       </div>
     );
   }
