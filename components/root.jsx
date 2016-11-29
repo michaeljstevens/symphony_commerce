@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ProductIndex from './product_index.jsx';
 import $ from 'jquery';
 import Rcslider from 'rc-slider';
+import Select from 'react-select';
 
 class Root extends Component {
 
@@ -10,9 +11,18 @@ class Root extends Component {
     this.state = {
       allProducts: null,
       showProducts: null,
-      sortBy: "default"
+      sortBy: "default",
+      options: [
+        { value: 'price', label: 'Price' },
+        { value: 'name', label: 'Name' },
+        { value: 'date', label: 'Recently Added' }
+      ]
     };
     this.filterPrice = this.filterPrice.bind(this);
+    this.sortProducts = this.sortProducts.bind(this);
+    this.sortByPrice = this.sortByPrice.bind(this);
+    this.sortByName = this.sortByName.bind(this);
+    this.sortByDate = this.sortByDate.bind(this);
   }
 
   componentDidMount() {
@@ -42,11 +52,49 @@ class Root extends Component {
     );
   }
 
+  sortByName(products) {
+    return (products.sort((a,b) => {
+        if(a.name < b.name) {
+          return -1;
+        } else if(b.name < a.name) {
+          return 1;
+        } else {
+          return 0;
+        }
+      })
+    );
+  }
+
+  sortByDate(products) {
+    return (products.sort((a,b) => {
+        if(a.createdAt < b.createdAt) {
+          return -1;
+        } else if(b.createdAt < a.createdAt) {
+          return 1;
+        } else {
+          return 0;
+        }
+      })
+    );
+  }
+
   filterPrice(range) {
     const filteredProducts = this.state.allProducts.filter(product => {
       return ((product.msrpInCents / 100) >= range[0] && (product.msrpInCents / 100) <= range[1]);
     });
     this.setState({showProducts: filteredProducts});
+  }
+
+  sortProducts(type) {
+    let sortedProducts;
+    if(type.value === 'price') {
+      sortedProducts = this.sortByPrice(this.state.showProducts);
+    } else if(type.value === 'name') {
+      sortedProducts = this.sortByName(this.state.showProducts);
+    } else {
+      sortedProducts = this.sortByDate(this.state.showProducts);
+    }
+    this.setState({showProducts: sortedProducts});
   }
 
   render() {
@@ -58,6 +106,12 @@ class Root extends Component {
             <Rcslider range={true} max={40} defaultValue={[0, 100]}
               pushable={3} onAfterChange={this.filterPrice}
               marks={{0: "0", 10: "10", 20: "20", 30: "30" }}/>
+          </div>
+          <div className="sort-options">
+            <Select
+              options={this.state.options}
+              onChange={this.sortProducts}
+              />
           </div>
         </div>
         <ProductIndex products={this.state.showProducts} />
