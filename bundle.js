@@ -21519,11 +21519,12 @@
 	    _this.state = {
 	      allProducts: null,
 	      showProducts: null,
+	      priceFiltered: null,
 	      sortBy: "price",
 	      priceRange: [0, 40],
 	      options: [{ value: 'price', label: 'Price' }, { value: 'name', label: 'Name' }, { value: 'date', label: 'Recently Added' }]
 	    };
-	    _this.filterPrice = _this.filterPrice.bind(_this);
+	    _this.priceFilter = _this.priceFilter.bind(_this);
 	    _this.handleSort = _this.handleSort.bind(_this);
 	    _this.sortProducts = _this.sortProducts.bind(_this);
 	    _this.searchFilter = _this.searchFilter.bind(_this);
@@ -21539,7 +21540,11 @@
 	        return console.log(message);
 	      };
 	      var success = function success(response) {
-	        _this2.setState({ allProducts: response.products, showProducts: _this2.sortProducts(response.products) });
+	        _this2.setState({ allProducts: response.products,
+	          showProducts: _this2.sortProducts(response.products),
+	          priceFiltered: response.products,
+	          searchFiltered: response.products
+	        });
 	      };
 	      _jquery2.default.ajax({
 	        method: 'GET',
@@ -21548,6 +21553,13 @@
 	        success: success,
 	        error: error
 	      });
+	    }
+	  }, {
+	    key: 'handleSort',
+	    value: function handleSort(e) {
+	      var type = e.target.value;
+	      var sortedProducts = this.sortProducts(this.state.showProducts, type);
+	      this.setState({ showProducts: sortedProducts, sortBy: type });
 	    }
 	  }, {
 	    key: 'sortProducts',
@@ -21572,50 +21584,37 @@
 	      });
 	    }
 	  }, {
-	    key: 'filterPrice',
-	    value: function filterPrice(range) {
+	    key: 'priceFilter',
+	    value: function priceFilter(range) {
 	      range = range ? range : this.state.priceRange;
-	      var filteredProducts = this.state.allProducts.filter(function (product) {
+	
+	      var allMatching = this.state.allProducts.filter(function (product) {
 	        return product.msrpInCents / 100 >= range[0] && product.msrpInCents / 100 <= range[1];
 	      });
-	      var sortType = this.state.sortBy;
-	      if (sortType) {
-	        if (sortType === 'price') {
-	          filteredProducts = this.sortByPrice(filteredProducts);
-	        } else if (sortType === 'name') {
-	          filteredProducts = this.sortByName(filteredProducts);
-	        } else {
-	          filteredProducts = this.sortByDate(filteredProducts);
-	        }
-	      }
-	      this.setState({ showProducts: filteredProducts });
-	    }
-	  }, {
-	    key: 'handleSort',
-	    value: function handleSort(e) {
-	      var type = e.target.value;
-	      var sortedProducts = this.sortProducts(this.state.showProducts, type);
-	      this.setState({ showProducts: sortedProducts, sortBy: type });
+	
+	      var filteredMatching = this.state.searchFiltered.filter(function (product) {
+	        return product.msrpInCents / 100 >= range[0] && product.msrpInCents / 100 <= range[1];
+	      });
+	
+	      allMatching = this.sortProducts(allMatching, this.state.sortBy);
+	      this.setState({ showProducts: filteredMatching, priceFiltered: allMatching });
 	    }
 	  }, {
 	    key: 'searchFilter',
 	    value: function searchFilter(e) {
 	      e.preventDefault();
 	      var text = e.target.value;
-	      var matchingProducts = this.state.allProducts.filter(function (product) {
+	
+	      var allMatching = this.state.allProducts.filter(function (product) {
 	        return product.name.toLowerCase().includes(text);
 	      });
-	      var sortType = this.state.sortBy;
-	      if (sortType) {
-	        if (sortType === 'price') {
-	          matchingProducts = this.sortByPrice(matchingProducts);
-	        } else if (sortType === 'name') {
-	          matchingProducts = this.sortByName(matchingProducts);
-	        } else {
-	          matchingProducts = this.sortByDate(matchingProducts);
-	        }
-	      }
-	      this.setState({ showProducts: matchingProducts });
+	
+	      var filteredMatching = this.state.priceFiltered.filter(function (product) {
+	        return product.name.toLowerCase().includes(text);
+	      });
+	
+	      filteredMatching = this.sortProducts(filteredMatching, this.state.sortBy);
+	      this.setState({ showProducts: filteredMatching, searchFiltered: allMatching });
 	    }
 	  }, {
 	    key: 'render',
@@ -21635,7 +21634,7 @@
 	              'Select Price Range'
 	            ),
 	            _react2.default.createElement(_rcSlider2.default, { range: true, max: 40, defaultValue: [0, 100],
-	              pushable: 3, onAfterChange: this.filterPrice,
+	              pushable: 3, onAfterChange: this.priceFilter,
 	              marks: { 0: "0", 10: "10", 20: "20", 30: "30" } })
 	          ),
 	          _react2.default.createElement(
@@ -21791,11 +21790,9 @@
 	    var _this = _possibleConstructorReturn(this, (ProductIndexItem.__proto__ || Object.getPrototypeOf(ProductIndexItem)).call(this, props));
 	
 	    _this.state = {
-	      product: _this.props.product,
-	      style: null
+	      product: _this.props.product
 	    };
 	    _this.formatPrice = _this.formatPrice.bind(_this);
-	    _this.grow = _this.grow.bind(_this);
 	    return _this;
 	  }
 	
@@ -21805,18 +21802,11 @@
 	      return "$" + this.state.product.msrpInCents / 100;
 	    }
 	  }, {
-	    key: "grow",
-	    value: function grow(e) {
-	      e.preventDefault();
-	      var newStyle = this.state.style ? null : { width: "500px", height: "500px" };
-	      this.setState({ style: newStyle });
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
-	        { className: "product-container", style: this.state.style, onClick: this.grow },
+	        { className: "product-container" },
 	        _react2.default.createElement("img", { className: "product-image", src: "http://" + this.state.product.mainImage.ref }),
 	        _react2.default.createElement(
 	          "div",

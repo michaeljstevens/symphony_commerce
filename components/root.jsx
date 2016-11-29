@@ -10,6 +10,7 @@ class Root extends Component {
     this.state = {
       allProducts: null,
       showProducts: null,
+      priceFiltered: null,
       sortBy: "price",
       priceRange: [0, 40],
       options: [
@@ -18,7 +19,7 @@ class Root extends Component {
         { value: 'date', label: 'Recently Added' }
       ]
     };
-    this.filterPrice = this.filterPrice.bind(this);
+    this.priceFilter = this.priceFilter.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.sortProducts = this.sortProducts.bind(this);
     this.searchFilter = this.searchFilter.bind(this);
@@ -27,7 +28,11 @@ class Root extends Component {
   componentDidMount() {
     const error = message => console.log(message);
     const success = response => {
-      this.setState({allProducts: response.products, showProducts: this.sortProducts(response.products)});
+      this.setState({allProducts: response.products,
+                     showProducts: this.sortProducts(response.products),
+                     priceFiltered: response.products,
+                     searchFiltered: response.products
+                   });
     };
     $.ajax({
       method: 'GET',
@@ -36,6 +41,12 @@ class Root extends Component {
       success,
       error
     });
+  }
+
+  handleSort(e) {
+    const type = e.target.value;
+    const sortedProducts = this.sortProducts(this.state.showProducts, type);
+    this.setState({showProducts: sortedProducts, sortBy: type});
   }
 
   sortProducts(products, type) {
@@ -60,47 +71,36 @@ class Root extends Component {
     );
   }
 
-  filterPrice(range) {
+  priceFilter(range) {
     range = range ? range : this.state.priceRange;
-    let filteredProducts = this.state.allProducts.filter(product => {
+
+    let allMatching = this.state.allProducts.filter(product => {
       return ((product.msrpInCents / 100) >= range[0] && (product.msrpInCents / 100) <= range[1]);
     });
-    let sortType = this.state.sortBy;
-    if(sortType) {
-      if(sortType === 'price') {
-        filteredProducts = this.sortByPrice(filteredProducts);
-      } else if(sortType === 'name') {
-        filteredProducts = this.sortByName(filteredProducts);
-      } else {
-        filteredProducts = this.sortByDate(filteredProducts);
-      }
-    }
-    this.setState({showProducts: filteredProducts});
+
+    let filteredMatching = this.state.searchFiltered.filter(product => {
+      return ((product.msrpInCents / 100) >= range[0] && (product.msrpInCents / 100) <= range[1]);
+    });
+
+    allMatching = this.sortProducts(allMatching, this.state.sortBy);
+    this.setState({showProducts: filteredMatching, priceFiltered: allMatching});
   }
 
-  handleSort(e) {
-    const type = e.target.value;
-    const sortedProducts = this.sortProducts(this.state.showProducts, type);
-    this.setState({showProducts: sortedProducts, sortBy: type});
-  }
 
   searchFilter(e) {
     e.preventDefault();
     const text = e.target.value;
-    let matchingProducts = this.state.allProducts.filter(product => {
+
+    let allMatching = this.state.allProducts.filter(product => {
       return product.name.toLowerCase().includes(text);
     });
-    let sortType = this.state.sortBy;
-    if(sortType) {
-      if(sortType === 'price') {
-        matchingProducts = this.sortByPrice(matchingProducts);
-      } else if(sortType === 'name') {
-        matchingProducts = this.sortByName(matchingProducts);
-      } else {
-        matchingProducts = this.sortByDate(matchingProducts);
-      }
-    }
-    this.setState({showProducts: matchingProducts});
+
+    let filteredMatching = this.state.priceFiltered.filter(product => {
+      return product.name.toLowerCase().includes(text);
+    });
+
+    filteredMatching = this.sortProducts(filteredMatching, this.state.sortBy);
+    this.setState({showProducts: filteredMatching, searchFiltered: allMatching});
   }
 
   render() {
@@ -110,7 +110,7 @@ class Root extends Component {
           <div className="price-slider">
             <h1>Select Price Range</h1>
             <Rcslider range={true} max={40} defaultValue={[0, 100]}
-              pushable={3} onAfterChange={this.filterPrice}
+              pushable={3} onAfterChange={this.priceFilter}
               marks={{0: "0", 10: "10", 20: "20", 30: "30" }}/>
           </div>
           <div className="sort-options">
