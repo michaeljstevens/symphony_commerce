@@ -19,17 +19,15 @@ class Root extends Component {
       ]
     };
     this.filterPrice = this.filterPrice.bind(this);
+    this.handleSort = this.handleSort.bind(this);
     this.sortProducts = this.sortProducts.bind(this);
-    this.sortByPrice = this.sortByPrice.bind(this);
-    this.sortByName = this.sortByName.bind(this);
-    this.sortByDate = this.sortByDate.bind(this);
     this.searchFilter = this.searchFilter.bind(this);
   }
 
   componentDidMount() {
     const error = message => console.log(message);
     const success = response => {
-      this.setState({allProducts: response.products, showProducts: this.sortByPrice(response.products)});
+      this.setState({allProducts: response.products, showProducts: this.sortProducts(response.products)});
     };
     $.ajax({
       method: 'GET',
@@ -40,37 +38,20 @@ class Root extends Component {
     });
   }
 
-  sortByPrice(products) {
-    return (products.sort((a,b) => {
-        if(a.msrpInCents < b.msrpInCents) {
-          return -1;
-        } else if(b.msrpInCents < a.msrpInCents) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-    );
-  }
+  sortProducts(products, type) {
 
-  sortByName(products) {
-    return (products.sort((a,b) => {
-        if(a.name < b.name) {
-          return -1;
-        } else if(b.name < a.name) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-    );
-  }
+    const sortTypes = {
+      price: "msrpInCents",
+      name: "name",
+      date: "createdAt"
+    };
 
-  sortByDate(products) {
+    type = type ? sortTypes[type] : sortTypes[this.state.sortBy];
+
     return (products.sort((a,b) => {
-        if(a.createdAt < b.createdAt) {
+        if(a[type] < b[type]) {
           return -1;
-        } else if(b.createdAt < a.createdAt) {
+        } else if(b[type] < a[type]) {
           return 1;
         } else {
           return 0;
@@ -97,17 +78,10 @@ class Root extends Component {
     this.setState({showProducts: filteredProducts});
   }
 
-  sortProducts(e) {
-    const type = e ? e.target.value : this.state.sortBy;
-    let sortedProducts;
-    if(type === 'price') {
-      sortedProducts = this.sortByPrice(this.state.showProducts);
-    } else if(type === 'name') {
-      sortedProducts = this.sortByName(this.state.showProducts);
-    } else {
-      sortedProducts = this.sortByDate(this.state.showProducts);
-    }
-    this.setState({sortBy: type, showProducts: sortedProducts});
+  handleSort(e) {
+    const type = e.target.value;
+    const sortedProducts = this.sortProducts(this.state.showProducts, type);
+    this.setState({showProducts: sortedProducts, sortBy: type});
   }
 
   searchFilter(e) {
@@ -141,7 +115,7 @@ class Root extends Component {
           </div>
           <div className="sort-options">
             <h1>Sort By:</h1>
-            <select onChange={this.sortProducts}>
+            <select onChange={this.handleSort}>
               <option value="price">Price</option>
               <option value="name">Name</option>
               <option value="date">Recently Added</option>

@@ -21524,10 +21524,8 @@
 	      options: [{ value: 'price', label: 'Price' }, { value: 'name', label: 'Name' }, { value: 'date', label: 'Recently Added' }]
 	    };
 	    _this.filterPrice = _this.filterPrice.bind(_this);
+	    _this.handleSort = _this.handleSort.bind(_this);
 	    _this.sortProducts = _this.sortProducts.bind(_this);
-	    _this.sortByPrice = _this.sortByPrice.bind(_this);
-	    _this.sortByName = _this.sortByName.bind(_this);
-	    _this.sortByDate = _this.sortByDate.bind(_this);
 	    _this.searchFilter = _this.searchFilter.bind(_this);
 	    return _this;
 	  }
@@ -21541,7 +21539,7 @@
 	        return console.log(message);
 	      };
 	      var success = function success(response) {
-	        _this2.setState({ allProducts: response.products, showProducts: _this2.sortByPrice(response.products) });
+	        _this2.setState({ allProducts: response.products, showProducts: _this2.sortProducts(response.products) });
 	      };
 	      _jquery2.default.ajax({
 	        method: 'GET',
@@ -21552,38 +21550,21 @@
 	      });
 	    }
 	  }, {
-	    key: 'sortByPrice',
-	    value: function sortByPrice(products) {
+	    key: 'sortProducts',
+	    value: function sortProducts(products, type) {
+	
+	      var sortTypes = {
+	        price: "msrpInCents",
+	        name: "name",
+	        date: "createdAt"
+	      };
+	
+	      type = type ? sortTypes[type] : sortTypes[this.state.sortBy];
+	
 	      return products.sort(function (a, b) {
-	        if (a.msrpInCents < b.msrpInCents) {
+	        if (a[type] < b[type]) {
 	          return -1;
-	        } else if (b.msrpInCents < a.msrpInCents) {
-	          return 1;
-	        } else {
-	          return 0;
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'sortByName',
-	    value: function sortByName(products) {
-	      return products.sort(function (a, b) {
-	        if (a.name < b.name) {
-	          return -1;
-	        } else if (b.name < a.name) {
-	          return 1;
-	        } else {
-	          return 0;
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'sortByDate',
-	    value: function sortByDate(products) {
-	      return products.sort(function (a, b) {
-	        if (a.createdAt < b.createdAt) {
-	          return -1;
-	        } else if (b.createdAt < a.createdAt) {
+	        } else if (b[type] < a[type]) {
 	          return 1;
 	        } else {
 	          return 0;
@@ -21610,18 +21591,11 @@
 	      this.setState({ showProducts: filteredProducts });
 	    }
 	  }, {
-	    key: 'sortProducts',
-	    value: function sortProducts(e) {
-	      var type = e ? e.target.value : this.state.sortBy;
-	      var sortedProducts = void 0;
-	      if (type === 'price') {
-	        sortedProducts = this.sortByPrice(this.state.showProducts);
-	      } else if (type === 'name') {
-	        sortedProducts = this.sortByName(this.state.showProducts);
-	      } else {
-	        sortedProducts = this.sortByDate(this.state.showProducts);
-	      }
-	      this.setState({ sortBy: type, showProducts: sortedProducts });
+	    key: 'handleSort',
+	    value: function handleSort(e) {
+	      var type = e.target.value;
+	      var sortedProducts = this.sortProducts(this.state.showProducts, type);
+	      this.setState({ showProducts: sortedProducts, sortBy: type });
 	    }
 	  }, {
 	    key: 'searchFilter',
@@ -21674,7 +21648,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'select',
-	              { onChange: this.sortProducts },
+	              { onChange: this.handleSort },
 	              _react2.default.createElement(
 	                'option',
 	                { value: 'price' },
