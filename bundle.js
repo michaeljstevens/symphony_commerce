@@ -21817,7 +21817,7 @@
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "product-container" },
-	        _react2.default.createElement("img", { className: "product-image", src: "http://" + this.state.product.mainImage.ref }),
+	        _react2.default.createElement("img", { className: "product-image", src: "https://" + this.state.product.mainImage.ref }),
 	        _react2.default.createElement(
 	          "div",
 	          { className: "product-info" },

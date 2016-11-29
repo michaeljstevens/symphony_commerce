@@ -17,7 +17,7 @@ class ProductIndexItem extends Component {
   render() {
     return(
       <div className="product-container">
-        <img className="product-image" src={`http://${this.state.product.mainImage.ref}`} />
+        <img className="product-image" src={`https://${this.state.product.mainImage.ref}`} />
         <div className="product-info">
           <h1 className="product-name">{this.state.product.name}</h1>
           <h2 className="product-price">{this.formatPrice()}</h2>
