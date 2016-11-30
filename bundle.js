@@ -21597,7 +21597,7 @@
 	        return product.msrpInCents / 100 >= range[0] && product.msrpInCents / 100 <= range[1];
 	      });
 	
-	      allMatching = this.sortProducts(allMatching, this.state.sortBy);
+	      filteredMatching = this.sortProducts(filteredMatching, this.state.sortBy);
 	      this.setState({ showProducts: filteredMatching, priceFiltered: allMatching });
 	    }
 	  }, {
